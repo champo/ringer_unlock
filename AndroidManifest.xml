@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.champo.unsuckyringer"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="17" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.champo.unsuckyringer.SliderActivity"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        
+        <receiver android:name="RingerWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            
+            <meta-data android:name="android.appwidget.provider" android:resource="@xml/ringer_widget_info"/>
+        </receiver>
+        
+    </application>
+    
+</manifest>
