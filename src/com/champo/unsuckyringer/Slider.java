@@ -19,14 +19,11 @@ public class Slider extends ImageView {
 
 	private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 	private final Bitmap thumbImage = BitmapFactory.decodeResource(getResources(), R.drawable.seek_thumb_normal);
-	private final Bitmap thumbPressedImage = BitmapFactory.decodeResource(getResources(), R.drawable.seek_thumb_pressed);
 	private final float thumbWidth = thumbImage.getWidth();
 	private final float thumbHalfWidth = 0.5f * thumbWidth;
 	private final float thumbHalfHeight = 0.5f * thumbImage.getHeight();
 	private final float lineHeight = 0.3f * thumbHalfHeight;
 	private final float padding = thumbHalfWidth;
-	
-	private boolean pressedThumb = false;
 	
 	private boolean notifyWhileDragging = false;
 	private OnSliderChangeListener listener;
@@ -151,8 +148,6 @@ public class Slider extends ImageView {
 			pointerIndex = event.findPointerIndex(mActivePointerId);
 			mDownMotionX = event.getX(pointerIndex);
 
-			pressedThumb = isThumbPressed(mDownMotionX);
-
 			setPressed(true);
 			invalidate();
 			onStartTrackingTouch();
@@ -161,6 +156,7 @@ public class Slider extends ImageView {
 
 			break;
 		case MotionEvent.ACTION_MOVE:
+			
 			if (mIsDragging) {
 				invalidate();
 				trackTouchEvent(event);
@@ -195,7 +191,6 @@ public class Slider extends ImageView {
 				onStopTrackingTouch();
 			}
 
-			pressedThumb = false;
 			invalidate();
 			if (listener != null) {
 				listener.onSliderValuesChanged(this, selectedValue);
@@ -246,7 +241,7 @@ public class Slider extends ImageView {
 	}
 
 	private void setNormalizedValue(double value) {
-		selectedValue = (int) (value * maxValue);
+		selectedValue = (int) Math.round(value * maxValue);
 	}
 
 	/**
@@ -316,7 +311,7 @@ public class Slider extends ImageView {
 		canvas.drawRect(rect, paint);
 
 		// draw thumb
-		drawThumb(normalizedToScreen(getNormalizedValue()), pressedThumb, canvas);
+		drawThumb(normalizedToScreen(getNormalizedValue()), canvas);
 	}
 
 	private double getNormalizedValue() {
@@ -361,35 +356,10 @@ public class Slider extends ImageView {
 	 * @param canvas
 	 *            The canvas to draw upon.
 	 */
-	private void drawThumb(float screenCoord, boolean pressed, Canvas canvas) {
-		canvas.drawBitmap(pressed ? thumbPressedImage : thumbImage, screenCoord
+	private void drawThumb(float screenCoord, Canvas canvas) {
+		canvas.drawBitmap(thumbImage, screenCoord
 				- thumbHalfWidth,
 				(float) ((0.5f * getHeight()) - thumbHalfHeight), paint);
-	}
-
-	/**
-	 * Decides if the thumb is touched by the given x-coordinate.
-	 * 
-	 * @param touchX
-	 *            The x-coordinate of a touch event in screen space.
-	 * @return true or false
-	 */
-	private boolean isThumbPressed(float touchX) {
-		return isInThumbRange(touchX, getNormalizedValue());
-	}
-
-	/**
-	 * Decides if given x-coordinate in screen space needs to be interpreted as
-	 * "within" the normalized thumb x-coordinate.
-	 * 
-	 * @param touchX
-	 *            The x-coordinate in screen space to check.
-	 * @param normalizedThumbValue
-	 *            The normalized x-coordinate of the thumb to check.
-	 * @return true if x-coordinate is in thumb range, false otherwise.
-	 */
-	private boolean isInThumbRange(float touchX, double normalizedThumbValue) {
-		return Math.abs(touchX - normalizedToScreen(normalizedThumbValue)) <= thumbHalfWidth;
 	}
 
 	/**
