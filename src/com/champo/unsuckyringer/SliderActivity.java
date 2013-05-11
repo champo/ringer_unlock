@@ -22,7 +22,6 @@ public class SliderActivity extends Activity {
 
 		configureSlider(R.id.notification_slider, VolumeType.NOTIFICATION, preferences, currentVolume, maxVolume);
 		configureSlider(R.id.ringer_slider, VolumeType.RINGER, preferences, currentVolume, maxVolume);
-		configureSlider(R.id.sms_slider, VolumeType.SMS, preferences, currentVolume, maxVolume);
 	}
 
 	private void configureSlider(
