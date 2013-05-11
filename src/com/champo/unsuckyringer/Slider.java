@@ -127,6 +127,8 @@ public class Slider extends ImageView {
 		if (listener != null) {
 			listener.onSliderValuesChanged(this, selectedValue);
 		}
+
+		invalidate();
 	}
 
 	/**

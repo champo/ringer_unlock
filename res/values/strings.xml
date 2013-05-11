@@ -4,5 +4,10 @@
     <string name="app_name">UnsuckyRinger</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="link_volumes">Link volumes</string>
+    <string name="quick_settings">Quick settings</string>
+    <string name="silent">Silent</string>
+    <string name="sleep">Sleep</string>
+    <string name="full">Full</string>
 
 </resources>
